@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+     <!-- DataTables -->
+     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.css"/>
+    
 @section('content')
 <div class="container">
     <div class="row">
@@ -16,19 +19,18 @@
             </div> 
             @endif
 
-            <table  class="table table-bordered"> 
+            <table id="" class="data-table table table-bordered "> 
                 <thead class="thead-dark"> 
                     <tr> 
-                        <th scope="col">No</th>
-                        <th scope="col">Student Name</th>
-                        <th scope="col">Major</th>
-                        <th scope="col">GPA</th>
-                        <th style="text-align: center;" colspan="2">Action</th> 
+                        <th>No</th>
+                        <th>Student Name</th>
+                        <th>Major</th>
+                        <th>GPA</th>
                     </tr> 
                 </thead> 
                 <tbody>
-
-                    @foreach($student as $students) 
+                    {{-- tabel biasa --}}
+                    {{-- @foreach($student as $students) 
                     <tr> 
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $students->nama}}</td>
@@ -43,11 +45,28 @@
                             </form> 
                         </td>  
                     </tr> 
-                    @endforeach 
+                    @endforeach  --}}
                 </tbody> 
             </table>
             
         </div>
     </div>
 </div>
+<script src="//code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+<script type="text/javascript">
+   $(document).ready( function () {
+    $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('student.index') }}",
+        columns: [
+            { data: 'id', name: 'id' },
+            { data: 'nama', name: 'nama' },
+            { data: 'major', name: 'majors.id' },
+            { data: 'ipk', name: 'ipk' },
+        ]
+    });
+});
+</script>
 @endsection

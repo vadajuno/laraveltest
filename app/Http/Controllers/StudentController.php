@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\Major;
 use Dotenv\Util\Str;
 use Illuminate\Http\Request;
+use DataTables;
 
 class StudentController extends Controller
 {
@@ -14,12 +15,18 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Student $student)
+    public function index(Request $request)
     {
-        $student = Student::get();
-        $majors = Major::get();
 
-        return view('student.index', compact('student', 'majors'));
+        if ($request->ajax()) {
+            $model = Student::with('majors');
+            return DataTables::eloquent($model)
+                ->addColumn('majors', function (Student $student) {
+                    return $student->majors->major_name;
+                })
+                ->toJson();
+        }
+        return view('student.index');
     }
 
     /**

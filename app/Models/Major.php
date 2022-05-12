@@ -11,4 +11,9 @@ class Major extends Model
     protected $fillable = [
         'major_id',
     ];
+
+    public function student()
+    {
+        return $this->hasMany('App\Models\Student');
+    }
 }
