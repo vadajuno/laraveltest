@@ -3,18 +3,29 @@
 @section('content')
 <div class="container">
 <h2>Create Student</h2> 
+
+@if ($errors->any()) 
+<div class="alert alert-danger"> Something wrong 
+    <ul> 
+        @foreach ($errors->all() as $error) 
+        <li>{{ $error }}</li> 
+        @endforeach
+    </ul>
+</div> 
+@endif
+
 <form action="{{ route('student.store') }}" method="POST"> 
     @csrf 
     <div class="form-group">
         <label>Nama</label>
-            <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"  required autocomplete="nama" autofocus>
+            <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" required autocomplete="nama" autofocus>
 
         </div>
 
     <div class="form-group"> 
         <label>Jurusan</label> 
-        <select class="form-control" name="major_id"> 
-            <option value="">Pilih Jurusan</option> 
+        <select class="form-control @error('major_id') is-invalid @enderror" name="major_id"> 
+            <option value="{{ old('major_id')}}">Pilih Jurusan</option> 
             @foreach($majors as $major) 
             <option value="{{ $major->id }}"> 
                 {{ $major->major_name }} 
@@ -25,7 +36,7 @@
 
     <div class="form-group">
         <label>IPK</label>
-        <input id="ipk" type="ipk" class="form-control @error('ipk') is-invalid @enderror" name="ipk" required autocomplete="ipk">
+        <input id="ipk" type="ipk" class="form-control @error('ipk') is-invalid @enderror" name="ipk" value="{{ old('ipk') }}" required autocomplete="ipk">
         </div>
     
     <div class="form-group text-right">
